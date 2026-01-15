@@ -48,15 +48,38 @@ if not exist "venv\Scripts\python.exe" (
 
 REM Install dependencies
 echo [*] Installing dependencies (this may take a few minutes)...
-venv\Scripts\python.exe -m pip install --upgrade pip --quiet
-venv\Scripts\python.exe -m pip install -r requirements-windows.txt --quiet
+echo.
+venv\Scripts\python.exe -m pip install --upgrade pip
 if %errorlevel% neq 0 (
-    echo [!] Failed to install dependencies
-    echo Trying verbose install...
-    venv\Scripts\python.exe -m pip install -r requirements-windows.txt
+    echo [!] Failed to upgrade pip
     pause
     exit /b 1
 )
+
+echo.
+echo [*] Installing packages...
+venv\Scripts\python.exe -m pip install -r requirements-windows.txt
+if %errorlevel% neq 0 (
+    echo.
+    echo [!] Some packages failed. Trying essential packages only...
+    echo.
+    venv\Scripts\python.exe -m pip install Flask Flask-SQLAlchemy Flask-Login Flask-WTF Flask-Mail Flask-Migrate
+    venv\Scripts\python.exe -m pip install reportlab stripe python-dotenv email-validator
+    venv\Scripts\python.exe -m pip install bcrypt PyJWT babel qrcode
+    REM Pillow is optional - try but don't fail if it doesn't work
+    venv\Scripts\python.exe -m pip install Pillow 2>nul
+)
+
+REM Verify Flask is installed
+venv\Scripts\python.exe -c "import flask" 2>nul
+if %errorlevel% neq 0 (
+    echo.
+    echo [!] Flask installation failed!
+    echo Please check the error messages above.
+    pause
+    exit /b 1
+)
+echo.
 echo [+] Dependencies installed
 
 REM Create necessary directories
