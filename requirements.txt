@@ -1,0 +1,33 @@
+# SąskaitaPro - Lithuanian Invoicing Platform
+# Core Dependencies
+
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+Flask-Mail==0.9.1
+Flask-Migrate==4.0.5
+Werkzeug==3.0.1
+SQLAlchemy==2.0.23
+
+# Database
+psycopg2-binary==2.9.9
+
+# PDF Generation
+reportlab==4.0.7
+WeasyPrint==60.1
+
+# Payment Processing
+stripe==7.8.0
+
+# Utilities
+python-dotenv==1.0.0
+email-validator==2.1.0
+gunicorn==21.2.0
+Pillow==10.1.0
+babel==2.14.0
+qrcode==7.4.2
+
+# Security
+bcrypt==4.1.2
+PyJWT==2.8.0
