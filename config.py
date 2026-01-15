@@ -120,9 +120,37 @@ class TestingConfig(Config):
     WTF_CSRF_ENABLED = False
 
 
+class WindowsLocalConfig(Config):
+    """Windows 11 Local Installation configuration"""
+    DEBUG = True
+
+    # Use SQLite for easy local setup (no PostgreSQL needed)
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'instance', 'saskaita_local.db')
+
+    # Disable SQL echo for cleaner console output
+    SQLALCHEMY_ECHO = False
+
+    # Local development server settings
+    SERVER_NAME = None  # Allow all hostnames
+
+    # Relaxed session settings for local use
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
+    # Local upload folder (Windows-compatible paths handled by os.path)
+    UPLOAD_FOLDER = os.path.join(basedir, 'uploads')
+
+    # Disable mail by default for local use (can be enabled via env vars)
+    MAIL_SUPPRESS_SEND = os.environ.get('MAIL_SUPPRESS_SEND', 'true').lower() in ['true', '1', 'yes']
+
+
 config = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
     'testing': TestingConfig,
+    'windows': WindowsLocalConfig,
+    'local': WindowsLocalConfig,
     'default': DevelopmentConfig
 }
