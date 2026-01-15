@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}{{ invoice.invoice_number }} - {{ company_name }}{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <a href="{{ url_for('invoices.index') }}" class="text-gray-500 hover:text-gray-700 flex items-center mb-2">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Atgal į sąrašą
+            </a>
+            <h1 class="text-2xl font-bold text-gray-900">{{ invoice.invoice_number }}</h1>
+            <div class="flex items-center mt-1 space-x-3">
+                <span class="inline-flex px-3 py-1 text-sm font-medium rounded-full {% if invoice.status == 'paid' %}bg-green-100 text-green-700{% elif invoice.status == 'sent' %}bg-blue-100 text-blue-700{% elif invoice.status == 'overdue' %}bg-red-100 text-red-700{% elif invoice.status == 'draft' %}bg-gray-100 text-gray-700{% elif invoice.status == 'cancelled' %}bg-gray-100 text-gray-500{% endif %}">
+                    {% if invoice.status == 'paid' %}Apmokėta{% elif invoice.status == 'sent' %}Išsiųsta{% elif invoice.status == 'overdue' %}Vėluoja{% elif invoice.status == 'draft' %}Juodraštis{% elif invoice.status == 'cancelled' %}Atšaukta{% endif %}
+                </span>
+                <span class="text-gray-500">{{ invoice.client.name }}</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <a href="{{ url_for('invoices.download_pdf', invoice_id=invoice.id) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                PDF
+            </a>
+            {% if invoice.status == 'draft' %}
+            <a href="{{ url_for('invoices.edit', invoice_id=invoice.id) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Redaguoti
+            </a>
+            <form method="POST" action="{{ url_for('invoices.send', invoice_id=invoice.id) }}" class="inline">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Siųsti klientui
+                </button>
+            </form>
+            {% elif invoice.status in ['sent', 'overdue'] %}
+            <form method="POST" action="{{ url_for('invoices.mark_paid', invoice_id=invoice.id) }}" class="inline">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Pažymėti apmokėta
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Invoice Details -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Pardavėjas</h3>
+                        <p class="font-medium text-gray-900">{{ invoice.company.name }}</p>
+                        {% if invoice.company.registration_address %}
+                        <p class="text-sm text-gray-600">{{ invoice.company.registration_address }}</p>
+                        {% endif %}
+                        {% if invoice.company.company_code %}
+                        <p class="text-sm text-gray-600">Įm. kodas: {{ invoice.company.company_code }}</p>
+                        {% endif %}
+                        {% if invoice.company.vat_code %}
+                        <p class="text-sm text-gray-600">PVM kodas: {{ invoice.company.vat_code }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Pirkėjas</h3>
+                        <p class="font-medium text-gray-900">{{ invoice.client.name }}</p>
+                        {% if invoice.client.address %}
+                        <p class="text-sm text-gray-600">{{ invoice.client.address }}</p>
+                        {% endif %}
+                        {% if invoice.client.company_code %}
+                        <p class="text-sm text-gray-600">Įm. kodas: {{ invoice.client.company_code }}</p>
+                        {% endif %}
+                        {% if invoice.client.vat_code %}
+                        <p class="text-sm text-gray-600">PVM kodas: {{ invoice.client.vat_code }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 border-y border-gray-200">
+                    <div>
+                        <p class="text-sm text-gray-500">Sąskaitos data</p>
+                        <p class="font-medium">{{ invoice.invoice_date|date_lt }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Apmokėti iki</p>
+                        <p class="font-medium">{{ invoice.due_date|date_lt }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Mokėjimo nuoroda</p>
+                        <p class="font-medium">{{ invoice.payment_reference or '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Sukurta</p>
+                        <p class="font-medium">{{ invoice.created_at.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Eilutės</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 text-sm font-medium text-gray-500">Aprašymas</th>
+                                    <th class="text-right py-3 text-sm font-medium text-gray-500">Kiekis</th>
+                                    <th class="text-right py-3 text-sm font-medium text-gray-500">Kaina</th>
+                                    <th class="text-right py-3 text-sm font-medium text-gray-500">PVM</th>
+                                    <th class="text-right py-3 text-sm font-medium text-gray-500">Suma</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                {% for item in invoice.items %}
+                                <tr>
+                                    <td class="py-3 text-gray-900">{{ item.description }}</td>
+                                    <td class="py-3 text-right text-gray-600">{{ item.quantity }} {{ item.unit }}</td>
+                                    <td class="py-3 text-right text-gray-600">{{ item.unit_price|currency }}</td>
+                                    <td class="py-3 text-right text-gray-600">{{ item.vat_rate }}%</td>
+                                    <td class="py-3 text-right font-medium text-gray-900">{{ item.line_total|currency }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="py-6 text-center text-gray-500">Nėra eilučių</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <div class="flex justify-end">
+                            <div class="w-64 space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Suma be PVM:</span>
+                                    <span class="text-gray-900">{{ invoice.subtotal|currency }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">PVM:</span>
+                                    <span class="text-gray-900">{{ invoice.vat_amount|currency }}</span>
+                                </div>
+                                <div class="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
+                                    <span class="text-gray-900">Viso:</span>
+                                    <span class="text-blue-600">{{ invoice.total|currency }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if invoice.notes %}
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">Pastabos</h3>
+                    <p class="text-gray-700">{{ invoice.notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Payment Info -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Mokėjimo informacija</h3>
+                {% if invoice.company.bank_account %}
+                <div class="space-y-3 text-sm">
+                    <div>
+                        <p class="text-gray-500">Bankas</p>
+                        <p class="font-medium">{{ invoice.company.bank_name or '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Sąskaita (IBAN)</p>
+                        <p class="font-medium font-mono">{{ invoice.company.bank_account }}</p>
+                    </div>
+                    {% if invoice.company.bank_swift %}
+                    <div>
+                        <p class="text-gray-500">SWIFT/BIC</p>
+                        <p class="font-medium">{{ invoice.company.bank_swift }}</p>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <p class="text-gray-500">Mokėjimo paskirtis</p>
+                        <p class="font-medium">{{ invoice.payment_reference }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-sm">Banko informacija nenurodyta. <a href="{{ url_for('settings.company') }}" class="text-blue-600 hover:text-blue-700">Pridėti →</a></p>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Veiksmai</h3>
+                <div class="space-y-2">
+                    <form method="POST" action="{{ url_for('invoices.duplicate', invoice_id=invoice.id) }}">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg flex items-center">
+                            <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            Kopijuoti sąskaitą
+                        </button>
+                    </form>
+                    {% if invoice.status not in ['paid', 'cancelled'] %}
+                    <form method="POST" action="{{ url_for('invoices.cancel', invoice_id=invoice.id) }}" onsubmit="return confirm('Ar tikrai norite atšaukti šią sąskaitą?')">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Atšaukti sąskaitą
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

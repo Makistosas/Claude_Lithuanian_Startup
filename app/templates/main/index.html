@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}SąskaitaPro - Profesionalios sąskaitos Lietuvos verslui{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="gradient-bg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Profesionalios sąskaitos faktūros<br>
+                <span class="text-blue-200">per kelias minutes</span>
+            </h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                Sukurkite, siųskite ir valdykite sąskaitas faktūras lengvai.
+                Pritaikyta Lietuvos verslui su PVM ir VMI ataskaitomis.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ url_for('auth.register') }}" class="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition">
+                    Pradėti nemokamai
+                </a>
+                <a href="{{ url_for('main.features') }}" class="px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition">
+                    Sužinoti daugiau
+                </a>
+            </div>
+            <p class="mt-4 text-blue-200 text-sm">Nereikia banko kortelės. 5 sąskaitos/mėn. nemokamai.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Viskas, ko reikia jūsų verslui</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Nuo sąskaitų kūrimo iki VMI ataskaitų - viename įrankyje.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Profesionalios sąskaitos</h3>
+                <p class="text-gray-600">Sukurkite gražias sąskaitas faktūras su savo logotipu ir spalvomis. PDF eksportas vienu paspaudimu.</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">VMI ataskaitos</h3>
+                <p class="text-gray-600">Automatinis PVM skaičiavimas ir ataskaitų generavimas. Eksportuokite duomenis VMI formatais.</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Siuntimas el. paštu</h3>
+                <p class="text-gray-600">Siųskite sąskaitas klientams tiesiogiai iš sistemos. Automatiniai priminimai apie vėluojančius mokėjimus.</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Klientų valdymas</h3>
+                <p class="text-gray-600">Tvarkykite klientų bazę vienoje vietoje. Matykite sąskaitų istoriją ir statistiką.</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Mokėjimų sekimas</h3>
+                <p class="text-gray-600">Sekite kurios sąskaitos apmokėtos, kurios vėluoja. Gaukite aiškią finansinę apžvalgą.</p>
+            </div>
+
+            <div class="p-6 bg-gray-50 rounded-xl">
+                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Saugi platforma</h3>
+                <p class="text-gray-600">Jūsų duomenys šifruoti ir saugomi ES serveriuose. BDAR atitinkanti sistema.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pricing Preview -->
+<div class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Paprastos ir skaidrios kainos</h2>
+            <p class="text-gray-600">Pradėkite nemokamai. Atnaujinkite kai reikia.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Free -->
+            <div class="bg-white rounded-xl p-8 border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900">Nemokamas</h3>
+                <div class="mt-4">
+                    <span class="text-4xl font-bold">€0</span>
+                    <span class="text-gray-500">/mėn.</span>
+                </div>
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        5 sąskaitos/mėn.
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        10 klientų
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        PDF eksportas
+                    </li>
+                </ul>
+                <a href="{{ url_for('auth.register') }}" class="mt-8 block w-full text-center py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50">
+                    Pradėti nemokamai
+                </a>
+            </div>
+
+            <!-- Pro - Highlighted -->
+            <div class="bg-blue-600 rounded-xl p-8 text-white transform scale-105 shadow-xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold">Profesionalus</h3>
+                    <span class="px-3 py-1 bg-blue-500 rounded-full text-sm">Populiariausias</span>
+                </div>
+                <div class="mt-4">
+                    <span class="text-4xl font-bold">€39</span>
+                    <span class="text-blue-200">/mėn.</span>
+                </div>
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Neribota sąskaitų
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Neribota klientų
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        VMI ataskaitos
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-200 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Pirmenybinis palaikymas
+                    </li>
+                </ul>
+                <a href="{{ url_for('auth.register') }}" class="mt-8 block w-full text-center py-3 bg-white text-blue-600 rounded-lg hover:bg-blue-50 font-semibold">
+                    Pradėti nemokamai
+                </a>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="bg-white rounded-xl p-8 border border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900">Įmonėms</h3>
+                <div class="mt-4">
+                    <span class="text-4xl font-bold">€99</span>
+                    <span class="text-gray-500">/mėn.</span>
+                </div>
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Viskas iš Pro
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Keli vartotojai
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        API prieiga
+                    </li>
+                </ul>
+                <a href="{{ url_for('auth.register') }}" class="mt-8 block w-full text-center py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50">
+                    Susisiekti
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="py-20 gradient-bg">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">Pasiruošę pradėti?</h2>
+        <p class="text-blue-100 mb-8 text-lg">Prisijunkite prie tūkstančių Lietuvos įmonių, kurios jau naudoja SąskaitaPro.</p>
+        <a href="{{ url_for('auth.register') }}" class="inline-block px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition">
+            Sukurti nemokamą paskyrą
+        </a>
+    </div>
+</div>
+{% endblock %}
